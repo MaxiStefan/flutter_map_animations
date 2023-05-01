@@ -1,3 +1,12 @@
+## 0.3.0-dev.1
+
+* Updated to [flutter_map](https://pub.dev/packages/flutter_map/versions/4.0.0-dev.1) v4
+
+## 0.2.2
+
+* Contribution from [MaxiStefan](https://github.com/MaxiStefan)
+    * Use the shortest rotation path when animating the camera [#1](https://github.com/TesteurManiak/flutter_map_animations/pull/1)
+
 ## 0.2.1
 
 * Updated example
