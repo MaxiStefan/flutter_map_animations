@@ -145,8 +145,12 @@ class AnimatedMapController extends MapControllerImpl {
   /// Set the rotation to [degree].
   ///
   /// {@macro animated_map_controller.animate_to.curve}
-  Future<void> animatedRotateTo(double degree, {Curve? curve}) {
-    return animateTo(rotation: degree, curve: curve);
+  Future<void> animatedRotateTo(
+    double degree, {
+    Curve? curve,
+    double? zoom,
+  }) {
+    return animateTo(rotation: degree, curve: curve, zoom: zoom);
   }
 
   /// Reset the rotation to 0.
