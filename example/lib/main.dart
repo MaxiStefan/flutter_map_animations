@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'com.example.app',
+                tileUpdateTransformer: _animatedMoveTileUpdateTransformer,
               ),
               AnimatedMarkerLayer(markers: markers),
             ],
@@ -167,3 +168,25 @@ class SeparatedColumn extends StatelessWidget {
     }
   }
 }
+
+/// Inspired by the contribution of [rorystephenson](https://github.com/fleaflet/flutter_map/pull/1475/files#diff-b663bf9f32e20dbe004bd1b58a53408aa4d0c28bcc29940156beb3f34e364556)
+final _animatedMoveTileUpdateTransformer =
+    TileUpdateTransformer.fromHandlers(handleData: (updateEvent, sink) {
+  final mapEvent = updateEvent.mapEvent;
+
+  final id =
+      mapEvent is MapEventMove ? AnimationId.tryParse(mapEvent.id) : null;
+  if (id != null && id.moveId == AnimatedMoveId.started) {
+    sink.add(
+      updateEvent.loadOnly(
+        loadCenterOverride: id.destLocation,
+        loadZoomOverride: id.destZoom,
+      ),
+    );
+  } else if (id?.moveId == AnimatedMoveId.inProgress) {
+  } else if (id?.moveId == AnimatedMoveId.finished) {
+    sink.add(updateEvent.pruneOnly());
+  } else {
+    sink.add(updateEvent);
+  }
+});
